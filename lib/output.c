@@ -89,11 +89,15 @@ th_print_long_ls(TAR *t)
 		strlcpy(username, pw->pw_name, sizeof(username));
 
 	gid = th_get_gid(t);
+#ifdef EMSCRIPTEN
+	snprintf(groupname, sizeof(groupname), "%d", gid);
+#else
 	gr = getgrgid(gid);
 	if (gr == NULL)
 		snprintf(groupname, sizeof(groupname), "%d", gid);
 	else
 		strlcpy(groupname, gr->gr_name, sizeof(groupname));
+#endif
 
 	strmode(th_get_mode(t), modestring);
 	printf("%.10s %-8.8s %-8.8s ", modestring, username, groupname);

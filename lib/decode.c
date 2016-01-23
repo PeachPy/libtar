@@ -47,11 +47,13 @@ uid_t
 th_get_uid(TAR *t)
 {
 	int uid;
+#ifndef EMSCRIPTEN
 	struct passwd *pw;
 
 	pw = getpwnam(t->th_buf.uname);
 	if (pw != NULL)
 		return pw->pw_uid;
+#endif
 
 	/* if the password entry doesn't exist */
 	sscanf(t->th_buf.uid, "%o", &uid);
@@ -63,11 +65,13 @@ gid_t
 th_get_gid(TAR *t)
 {
 	int gid;
+#ifndef EMSCRIPTEN
 	struct group *gr;
 
 	gr = getgrnam(t->th_buf.gname);
 	if (gr != NULL)
 		return gr->gr_gid;
+#endif
 
 	/* if the group entry doesn't exist */
 	sscanf(t->th_buf.gid, "%o", &gid);

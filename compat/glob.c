@@ -385,10 +385,14 @@ globtilde(pattern, patbuf, patbuf_len, pglob)
 		/*
 		 * Expand a ~user
 		 */
+#ifdef EMSCRIPTEN
+		return pattern;
+#else
 		if ((pwd = getpwnam((char*) patbuf)) == NULL)
 			return pattern;
 		else
 			h = pwd->pw_dir;
+#endif
 	}
 
 	/* Copy the home directory */
